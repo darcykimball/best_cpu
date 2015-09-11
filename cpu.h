@@ -17,8 +17,8 @@
  * 0A     001  00F
  *
  */
-#define FE_OP 0x01000000
-#define ST_OP 0x02000000
+#define FE_OP 0x00000000
+#define ST_OP 0x01000000
 
 #define FE(r1,r2) (FE_OP | ((r1) << 3*4) | (r2))
 #define ST(r1,r2) (ST_OP | ((r1) << 3*4) | (r2))

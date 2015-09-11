@@ -37,7 +37,6 @@ int main() {
   regs.general[1] = sample_value_addr; 
 
   /* Execute program */
-  if (0) {
   for (i = 0; i < sizeof(test_program)/sizeof(uint32_t); i++) {
     /* Set program counter */
     regs.eip = test_program[i];
@@ -48,7 +47,6 @@ int main() {
     /* Dump */
     dump_registers(&regs);
     dump_memory(&mem);
-  }
   }
 
   /* FIXME: remove!! try dumping for now */

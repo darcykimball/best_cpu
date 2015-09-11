@@ -18,20 +18,20 @@ void dump_registers(registers* regs) {
   }
 
   /* Dump general-purpose registers */
-  fprintf(stderr, "General purpose:\n");
+  fprintf(stdout, "General purpose:\n");
   for (i = 0; i < N_REGIS; i++) {
-    DUMPINT(stderr, regs->general[i]);
+    DUMPINT(stdout, regs->general[i]);
   }
 
   /* Dump various special-purpose registers */
-  fprintf(stderr, "Program counter:\n");
-  DUMPINT(stderr, regs->eip);
-  fprintf(stderr, "Memory address:\n");
-  DUMPINT(stderr, regs->madd);
-  fprintf(stderr, "Memory data:\n");
-  DUMPINT(stderr, regs->mdat);
-  fprintf(stderr, "Flags:\n");
-  DUMPINT(stderr, regs->flags);
+  printf("Program counter:\n");
+  DUMPINT(stdout, regs->eip);
+  printf("Memory address:\n");
+  DUMPINT(stdout, regs->madd);
+  printf("Memory data:\n");
+  DUMPINT(stdout, regs->mdat);
+  printf("Flags:\n");
+  DUMPINT(stdout, regs->flags);
 }
 
 /* Dump contents of memory */
@@ -44,20 +44,21 @@ void dump_memory(memory* mem) {
 
   word = (uint32_t*) mem->data;
   for (i = 0; i < MEMSIZE/32; i++) {
-    fprintf(stderr, "%08x\n", *word++); 
+    printf("%08x\n", *word++); 
   }
 }
 
 void execute(registers* regs, memory* mem) {
-  int instr; /* Instruction index (for table) */
+  int instr_index; /* Instruction index (for table) */
   int nreg1; /* Index of first register in instruction */
   int nreg2; /* Index of second register in instruction */
 
   /* 'Decode' instruction */
-  instr = GETOP(regs->eip);
+  instr_index = GETOP(regs->eip);
 
   /* FIXME; removre */
-  fprintf(stderr, "Executing instruction %u", instr);
+  fprintf(stderr, "eip = %08x\n", regs->eip);
+  fprintf(stderr, "Executing instruction # %u\n", instr_index);
 
   /* Get register args */
   nreg1 = GETR1(regs->eip);
@@ -67,10 +68,23 @@ void execute(registers* regs, memory* mem) {
   fprintf(stderr, "nreg1 = %u, reg1 = %08x\n", nreg1, regs->general[nreg1]);
   fprintf(stderr, "nreg2 = %u, reg2 = %08x\n", nreg2, regs->general[nreg2]);
 
+  /* 'Execute' the instruction */
+  instr_table[instr_index](mem, regs->general + nreg1, regs->general + nreg2);
 }
 
 void fetch(memory* mem, reg* addr, reg* dest) {
+  /* Set the value using the 'real' location in memory; the address stored in
+   * 'addr' is the simulated value, i.e. relative to the beginning of the
+   * simulated memory */
+  *dest = *(mem->data + *addr); 
 }
 
 void store(memory* mem, reg* src, reg* addr) {
+  uint32_t* dest_addr = (uint32_t*)(mem->data) + *addr;
+
+  /* FIXME: remove!! */
+  fprintf(stderr, "store: mem = %016x, addr = %08x, dest_addr = %016x\n",
+    mem, addr, dest_addr);
+
+  *dest_addr = *src;
 }
