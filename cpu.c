@@ -76,11 +76,12 @@ void fetch(memory* mem, reg* addr, reg* dest) {
   /* Set the value using the 'real' location in memory; the address stored in
    * 'addr' is the simulated value, i.e. relative to the beginning of the
    * simulated memory */
-  *dest = *(mem->data + *addr); 
+  *dest = *((uint32_t*)(mem->data) + *addr); 
 }
 
 void store(memory* mem, reg* src, reg* addr) {
-  uint32_t* dest_addr = (uint32_t*)(mem->data) + *addr;
+  /* The offset calculation must be done in bytes here */
+  uint32_t* dest_addr = (uint32_t*)(mem->data + *addr);
 
   /* FIXME: remove!! */
   fprintf(stderr, "store: mem = %016x, addr = %08x, dest_addr = %016x\n",
