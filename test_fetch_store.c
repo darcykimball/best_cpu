@@ -16,7 +16,6 @@ int main() {
   registers regs; /* Registers */
   memory mem; /* Main memory */
   int i; /* Instruction count */
-  uint32_t pstrt; /* User program starting address */
 
   /* 
    * 'Boot up'??
@@ -25,7 +24,6 @@ int main() {
   /* Initialize memory/registers to zero */
   memset(mem.data, 0, MEMSIZE);
   memset(&regs, 0, sizeof(registers));
-  memcpy(mem.data + 1, &pstrt, sizeof(pstrt));
 
   /* 'Load' sample program into memory */
   memcpy(mem.data + OS_SIZE, test_program, sizeof(test_program));
