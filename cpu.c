@@ -40,7 +40,7 @@ void dump_memory(memory* mem) {
   uint32_t* word; /* temp word to print */
 
   /* Print out word-by-word */
-  fprintf(stderr, "Main memory:\n");
+  printf("Main memory:\n");
 
   word = (uint32_t*) mem->data;
   for (i = 0; i < MEMSIZE/32; i++) {
