@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "cpu.h"
 
+#define DEBUG
+
 /* Instruction table */
 typedef void (*instr_ptr) (memory*, reg*, reg*);
 instr_ptr instr_table[] = {
@@ -56,17 +58,19 @@ void execute(registers* regs, memory* mem) {
   /* 'Decode' instruction */
   instr_index = GETOP(regs->eip);
 
-  /* FIXME; removre */
+#ifdef DEBUG
   fprintf(stderr, "eip = %08x\n", regs->eip);
   fprintf(stderr, "Executing instruction # %u\n", instr_index);
+#endif
 
   /* Get register args */
   nreg1 = GETR1(regs->eip);
   nreg2 = GETR2(regs->eip);
 
-  /* FIXME: remove */
+#ifdef DEBUG
   fprintf(stderr, "nreg1 = %u, reg1 = %08x\n", nreg1, regs->general[nreg1]);
   fprintf(stderr, "nreg2 = %u, reg2 = %08x\n", nreg2, regs->general[nreg2]);
+#endif
 
   /* 'Execute' the instruction */
   instr_table[instr_index](mem, regs->general + nreg1, regs->general + nreg2);
@@ -83,9 +87,10 @@ void store(memory* mem, reg* src, reg* addr) {
   /* The offset calculation must be done in bytes here */
   uint32_t* dest_addr = (uint32_t*)(mem->data + *addr);
 
-  /* FIXME: remove!! */
+#ifdef DEBUG
   fprintf(stderr, "store: mem = %016x, addr = %08x, dest_addr = %016x\n",
     mem, addr, dest_addr);
+#endif
 
   *dest_addr = *src;
 }

@@ -36,6 +36,10 @@ int main() {
   regs.general[0] = 0xDEADBEEF;
   regs.general[1] = sample_value_addr; 
 
+  printf("Initial state:\n");
+  dump_registers(&regs);
+  dump_memory(&mem);
+
   /* Execute program */
   for (i = 0; i < sizeof(test_program)/sizeof(uint32_t); i++) {
     /* Set program counter */
@@ -48,10 +52,6 @@ int main() {
     dump_registers(&regs);
     dump_memory(&mem);
   }
-
-  /* FIXME: remove!! try dumping for now */
-  dump_registers(&regs);
-  dump_memory(&mem);
 
   return EXIT_SUCCESS;
 }
