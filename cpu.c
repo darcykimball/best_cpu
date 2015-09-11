@@ -76,7 +76,7 @@ void fetch(memory* mem, reg* addr, reg* dest) {
   /* Set the value using the 'real' location in memory; the address stored in
    * 'addr' is the simulated value, i.e. relative to the beginning of the
    * simulated memory */
-  *dest = *((uint32_t*)(mem->data) + *addr); 
+  *dest = *((uint32_t*)(mem->data + *addr)); 
 }
 
 void store(memory* mem, reg* src, reg* addr) {
