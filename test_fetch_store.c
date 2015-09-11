@@ -6,8 +6,10 @@
 #define OS_SIZE 8 /* Just some arbitrary number for now */
 
 uint32_t test_program[] = {
-  ST(0, 1), /* Store value from reg0 into address held in reg1*/ 
-  FE(1, 2) /* Store value from reg1 into reg2 */
+  ST(0, 1), /* Store value from reg0 into address in reg1*/ 
+  FE(1, 2), /* Fetch value from address in reg1 into reg2 */
+  FE(1, 7), /* Fetch value from address in reg1 into reg7 */
+  ST(3, 1)  /* Store value from reg3 into address in reg1 */
 };
 
 int main() {
@@ -35,6 +37,7 @@ int main() {
 
   regs.general[0] = 0xDEADBEEF;
   regs.general[1] = sample_value_addr; 
+  regs.general[3] = 0xCAFEBABE;
 
   printf("Initial state:\n");
   dump_registers(&regs);
@@ -42,6 +45,8 @@ int main() {
 
   /* Execute program */
   for (i = 0; i < sizeof(test_program)/sizeof(uint32_t); i++) {
+    printf("Executing instruction %u in test_program\n", i);
+
     /* Set program counter */
     regs.eip = test_program[i];
 
