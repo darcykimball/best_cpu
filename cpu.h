@@ -53,9 +53,9 @@ void dump_memory(memory* mem);
 void execute(registers* regs, memory* mem);
 
 /* Fetch a word from memory */
-void fetch(reg* addr, reg* dest); 
+void fetch(memory* mem, reg* addr, reg* dest); 
 
 /* Store a word from a register to memory */
-void store(reg* src, reg* addr);
+void store(memory* mem, reg* src, reg* addr);
 
 #endif /* CPU_H */

@@ -2,7 +2,7 @@
 #include "cpu.h"
 
 /* Instruction table */
-typedef void (*instr_ptr) (reg*, reg*);
+typedef void (*instr_ptr) (memory*, reg*, reg*);
 instr_ptr instr_table[] = {
   fetch,
   store
@@ -66,10 +66,11 @@ void execute(registers* regs, memory* mem) {
   /* FIXME: remove */
   fprintf(stderr, "nreg1 = %u, reg1 = %08x\n", nreg1, regs->general[nreg1]);
   fprintf(stderr, "nreg2 = %u, reg2 = %08x\n", nreg2, regs->general[nreg2]);
+
 }
 
-void fetch(reg* addr, reg* dest) {
+void fetch(memory* mem, reg* addr, reg* dest) {
 }
 
-void store(reg* src, reg* addr) {
+void store(memory* mem, reg* src, reg* addr) {
 }
