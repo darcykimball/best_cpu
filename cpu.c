@@ -1,6 +1,13 @@
 #include <stdio.h>
 #include "cpu.h"
 
+/* Instruction table */
+typedef void (*instr_ptr) (reg*, reg*);
+instr_ptr instr_table[] = {
+  fetch,
+  store
+};
+
 /* Dump contents of registers */
 void dump_registers(registers* regs) {
   int i; /* to iterate through general-purpose registers */
@@ -37,6 +44,32 @@ void dump_memory(memory* mem) {
 
   word = (uint32_t*) mem->data;
   for (i = 0; i < MEMSIZE/32; i++) {
-    fprintf(stderr, "%x\n", *word++); 
+    fprintf(stderr, "%08x\n", *word++); 
   }
+}
+
+void execute(registers* regs, memory* mem) {
+  int instr; /* Instruction index (for table) */
+  int nreg1; /* Index of first register in instruction */
+  int nreg2; /* Index of second register in instruction */
+
+  /* 'Decode' instruction */
+  instr = GETOP(regs->eip);
+
+  /* FIXME; removre */
+  fprintf(stderr, "Executing instruction %u", instr);
+
+  /* Get register args */
+  nreg1 = GETR1(regs->eip);
+  nreg2 = GETR2(regs->eip);
+
+  /* FIXME: remove */
+  fprintf(stderr, "nreg1 = %u, reg1 = %08x\n", nreg1, regs->general[nreg1]);
+  fprintf(stderr, "nreg2 = %u, reg2 = %08x\n", nreg2, regs->general[nreg2]);
+}
+
+void fetch(reg* addr, reg* dest) {
+}
+
+void store(reg* src, reg* addr) {
 }

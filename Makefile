@@ -7,7 +7,7 @@ all: $(EXE)
 cpu.o: cpu.h cpu.c
 	$(CC) $(CCFLAGS) -c cpu.c
 
-test_fetch_store.o: test_fetch_store.c
+test_fetch_store.o: test_fetch_store.c cpu.o
 	$(CC) $(CCFLAGS) -c test_fetch_store.c
 
 test_fetch_store: test_fetch_store.o
