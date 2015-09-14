@@ -6,7 +6,7 @@
 const char* reg_names[] = { "A", "B", "C", "D", "E", "F", "G", "H" };
 
 /* Instruction table */
-typedef void (*instr_ptr) (memory*, reg*, reg*);
+typedef void (*instr_ptr) (void*, void*, void*);
 instr_ptr instr_table[] = {
   fetch,
   store
@@ -61,7 +61,7 @@ void execute(registers* regs, memory* mem) {
   int nreg2; /* Index of second register in instruction */
 
   /* 'Decode' instruction */
-  instr_index = GETOP(regs->prog_counter);
+  instr_index = GETINSTR(regs->prog_counter);
 
 #ifdef DEBUG
   fprintf(stderr, "prog_counter = %08x\n", regs->prog_counter);
@@ -69,8 +69,8 @@ void execute(registers* regs, memory* mem) {
 #endif
 
   /* Get register args */
-  nreg1 = GETR1(regs->prog_counter);
-  nreg2 = GETR2(regs->prog_counter);
+  nreg1 = GETOP1(regs->prog_counter);
+  nreg2 = GETOP2(regs->prog_counter);
 
 #ifdef DEBUG
   fprintf(stderr, "nreg1 = %u, reg1 = %08x\n", nreg1, regs->general[nreg1]);
@@ -81,21 +81,22 @@ void execute(registers* regs, memory* mem) {
   instr_table[instr_index](mem, regs->general + nreg1, regs->general + nreg2);
 }
 
-void fetch(memory* mem, reg* addr, reg* dest) {
+void fetch(void* mem, void* addr, void* dest) {
   /* Set the value using the 'real' location in memory; the address stored in
    * 'addr' is the simulated value, i.e. relative to the beginning of the
    * simulated memory */
-  *dest = *((uint32_t*)(mem->data + *addr)); 
+  *(uint32_t*)dest =
+    *((uint32_t*)(((memory*)mem)->data + *(uint32_t*)addr)); 
 }
 
-void store(memory* mem, reg* src, reg* addr) {
+void store(void* mem, void* src, void* addr) {
   /* The offset calculation must be done in bytes here */
-  uint32_t* dest_addr = (uint32_t*)(mem->data + *addr);
+  uint32_t* dest_addr = (uint32_t*)(((memory*)mem)->data + *(uint32_t*)addr);
 
 #ifdef DEBUG
   fprintf(stderr, "store: mem = %016x, addr = %08x, dest_addr = %016x\n",
     mem, addr, dest_addr);
 #endif
 
-  *dest_addr = *src;
+  *dest_addr = *(uint32_t*)src;
 }

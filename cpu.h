@@ -20,12 +20,21 @@
 #define FE_OP 0x00000000
 #define ST_OP 0x01000000
 
-#define FE(r1,r2) (FE_OP | ((r1) << 3*4) | (r2))
-#define ST(r1,r2) (ST_OP | ((r1) << 3*4) | (r2))
+#define FE(r1,r2) (FE_OP | ((r1) << 2*8) | (r2 << 8))
+#define ST(r1,r2) (ST_OP | ((r1) << 2*8) | (r2 << 8))
+#define SET(r1,r2,r3) (SET_OP | ((r1) << 2*8) | (r2 << 8) | (r3))
+#define ADD(r1,r2,r3) (ADD_OP | ((r1) << 2*8) | (r2 << 8) | (r3))
+#define SUB(r1,r2,r3) (SUB_OP | ((r1) << 2*8) | (r2 << 8) | (r3))
+#define MUL(r1,r2,r3) (MUL_OP | ((r1) << 2*8) | (r2 << 8) | (r3))
+#define DIV(r1,r2,r3) (DIV_OP | ((r1) << 2*8) | (r2 << 8) | (r3))
 
-#define GETOP(instr) ((instr) >> 3*8)
-#define GETR1(instr) (((instr) & 0x00FFF000) >> 3*4)
-#define GETR2(instr) ((instr) & 0x00000FFF)
+/* Macro for getting instruction opcode */
+#define GETINSTR(instr) ((instr) >> 3*8)
+
+/* Macros for extracting operands from an instruction */
+#define GETOP1(instr) (((instr) & 0x00FF0000) >> 2*8)
+#define GETOP2(instr) (((instr) & 0x0000FF00) >> 8)
+#define GETOP3(instr) ((instr) & 0x000000FF)
 
 /* Registers */
 typedef uint32_t reg;
@@ -53,9 +62,9 @@ void dump_memory(memory* mem);
 void execute(registers* regs, memory* mem);
 
 /* Fetch a word from memory */
-void fetch(memory* mem, reg* addr, reg* dest); 
+void fetch(void* mem, void* addr, void* dest); 
 
 /* Store a word from a register to memory */
-void store(memory* mem, reg* src, reg* addr);
+void store(void* mem, void* src, void* addr);
 
 #endif /* CPU_H */
