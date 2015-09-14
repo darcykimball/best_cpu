@@ -32,9 +32,9 @@ typedef uint32_t reg;
 
 typedef struct registers {
   reg general[N_REGIS]; /* General-purpose registers */
-  reg eip; /* Program counter */
-  reg madd; /* Memory address */
-  reg mdat; /* Memory data */
+  reg prog_counter; /* Program counter */
+  reg mem_addr; /* Memory address */
+  reg mem_data; /* Memory data */
   reg flags; /* Flags (for various states) */
 } registers;
 

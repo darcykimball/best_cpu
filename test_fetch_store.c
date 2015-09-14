@@ -46,7 +46,7 @@ int main() {
     printf("Executing instruction %u in test_program\n", i);
 
     /* Set program counter */
-    regs.eip = test_program[i];
+    regs.prog_counter = test_program[i];
 
     /* Execute instruction */
     execute(&regs, &mem);

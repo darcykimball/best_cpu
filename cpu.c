@@ -3,6 +3,8 @@
 
 #define DEBUG
 
+const char* reg_names[] = { "A", "B", "C", "D", "E", "F", "G", "H" };
+
 /* Instruction table */
 typedef void (*instr_ptr) (memory*, reg*, reg*);
 instr_ptr instr_table[] = {
@@ -22,16 +24,19 @@ void dump_registers(registers* regs) {
   /* Dump general-purpose registers */
   fprintf(stdout, "General purpose:\n");
   for (i = 0; i < N_REGIS; i++) {
+    if (i < sizeof(reg_names)) {
+      printf("Register %s: ", reg_names[i]);
+    }    
     DUMPINT(stdout, regs->general[i]);
   }
 
   /* Dump various special-purpose registers */
   printf("Program counter:\n");
-  DUMPINT(stdout, regs->eip);
+  DUMPINT(stdout, regs->prog_counter);
   printf("Memory address:\n");
-  DUMPINT(stdout, regs->madd);
+  DUMPINT(stdout, regs->mem_addr);
   printf("Memory data:\n");
-  DUMPINT(stdout, regs->mdat);
+  DUMPINT(stdout, regs->mem_data);
   printf("Flags:\n");
   DUMPINT(stdout, regs->flags);
 }
@@ -56,16 +61,16 @@ void execute(registers* regs, memory* mem) {
   int nreg2; /* Index of second register in instruction */
 
   /* 'Decode' instruction */
-  instr_index = GETOP(regs->eip);
+  instr_index = GETOP(regs->prog_counter);
 
 #ifdef DEBUG
-  fprintf(stderr, "eip = %08x\n", regs->eip);
+  fprintf(stderr, "prog_counter = %08x\n", regs->prog_counter);
   fprintf(stderr, "Executing instruction # %u\n", instr_index);
 #endif
 
   /* Get register args */
-  nreg1 = GETR1(regs->eip);
-  nreg2 = GETR2(regs->eip);
+  nreg1 = GETR1(regs->prog_counter);
+  nreg2 = GETR2(regs->prog_counter);
 
 #ifdef DEBUG
   fprintf(stderr, "nreg1 = %u, reg1 = %08x\n", nreg1, regs->general[nreg1]);
