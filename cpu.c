@@ -9,7 +9,13 @@ const char* reg_names[] = { "A", "B", "C", "D", "E", "F", "G", "H" };
 typedef void (*instr_ptr) (void*, void*, void*);
 instr_ptr instr_table[] = {
   fetch,
-  store
+  store,
+  set,
+  add,
+  sub,
+  mul,
+  divide,
+  setc
 };
 
 /* Dump contents of registers */
@@ -59,6 +65,7 @@ void execute(registers* regs, memory* mem) {
   int instr_index; /* Instruction index (for table) */
   int nreg1; /* Index of first register in instruction */
   int nreg2; /* Index of second register in instruction */
+  int nreg3; /* Index of second register in instruction */
 
   /* 'Decode' instruction */
   instr_index = GETINSTR(regs->prog_counter);
@@ -71,14 +78,29 @@ void execute(registers* regs, memory* mem) {
   /* Get register args */
   nreg1 = GETOP1(regs->prog_counter);
   nreg2 = GETOP2(regs->prog_counter);
+  nreg3 = GETOP3(regs->prog_counter);
 
 #ifdef DEBUG
   fprintf(stderr, "nreg1 = %u, reg1 = %08x\n", nreg1, regs->general[nreg1]);
   fprintf(stderr, "nreg2 = %u, reg2 = %08x\n", nreg2, regs->general[nreg2]);
+  fprintf(stderr, "nreg3 = %u, reg3 = %08x\n", nreg3, regs->general[nreg3]);
 #endif
 
   /* 'Execute' the instruction */
-  instr_table[instr_index](mem, regs->general + nreg1, regs->general + nreg2);
+  if (instr_index == GETINSTR(FE_OP) || instr_index == GETINSTR(ST_OP)) {
+    /* This is a fetch/store instruction; need to pass in the memory */
+    instr_table[instr_index](mem, regs->general + nreg1, regs->general + nreg2);
+  } else if (instr_index == GETINSTR(SETC_OP)) {
+    /* This is a set constant instruction; have to pass the constant value */
+    /* FIXME: remove!! */
+    fprintf(stderr, "GETCONST result = %08x\n", GETCONST(regs->prog_counter));
+    fprintf(stderr, "void* cast result = %08x\n", (void*)GETCONST(regs->prog_counter));
+    instr_table[instr_index]((void*)GETCONST(regs->prog_counter),
+      regs->general + nreg1, NULL);
+  } else {
+    instr_table[instr_index](regs->general + nreg1, regs->general + nreg2,
+      regs->general + nreg3);
+  }
 }
 
 void fetch(void* mem, void* addr, void* dest) {
@@ -99,4 +121,32 @@ void store(void* mem, void* src, void* addr) {
 #endif
 
   *dest_addr = *(uint32_t*)src;
+}
+
+void set(void* src, void* dest, void* unused) {
+  *(uint32_t*)dest = *(uint32_t*)src;
+}
+
+void add(void* op1, void* op2, void* dest) {
+  *(int32_t*)dest = *(int32_t*)op1 + *(int32_t*)op2;
+}
+
+void sub(void* op1, void* op2, void* dest) {
+  *(int32_t*)dest = *(int32_t*)op1 - *(int32_t*)op2;
+}
+
+void mul(void* op1, void* op2, void* dest) {
+  *(int32_t*)dest = *(int32_t*)op1 * (*(int32_t*)op2);
+}
+
+void divide(void* op1, void* op2, void* dest) {
+  *(int32_t*)dest = *(int32_t*)op1 / *(int32_t*)op2;
+}
+
+void setc(void* num, void* dest, void* unused) {
+#ifdef DEBUG
+  fprintf(stderr, "store: constant = %08x\n", (uint32_t)num);
+#endif
+
+  *(uint32_t*)dest = (uint32_t)num;
 }
