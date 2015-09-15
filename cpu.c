@@ -92,9 +92,6 @@ void execute(registers* regs, memory* mem) {
     instr_table[instr_index](mem, regs->general + nreg1, regs->general + nreg2);
   } else if (instr_index == GETINSTR(SETC_OP)) {
     /* This is a set constant instruction; have to pass the constant value */
-    /* FIXME: remove!! */
-    fprintf(stderr, "GETCONST result = %08x\n", GETCONST(regs->prog_counter));
-    fprintf(stderr, "void* cast result = %08x\n", (void*)GETCONST(regs->prog_counter));
     instr_table[instr_index]((void*)GETCONST(regs->prog_counter),
       regs->general + nreg1, NULL);
   } else {
@@ -127,6 +124,9 @@ void set(void* src, void* dest, void* unused) {
   *(uint32_t*)dest = *(uint32_t*)src;
 }
 
+/* FIXME: add code for setting condition bits in flags register after each
+ * arithmetic operation */
+
 void add(void* op1, void* op2, void* dest) {
   *(int32_t*)dest = *(int32_t*)op1 + *(int32_t*)op2;
 }
@@ -149,4 +149,24 @@ void setc(void* num, void* dest, void* unused) {
 #endif
 
   *(uint32_t*)dest = (uint32_t)num;
+}
+
+/* TODO */
+void sll(void* num, void* src, void* dest) {
+}
+
+/* TODO */
+void srl(void* num, void* src, void* dest) {
+}
+
+/* TODO */
+void andb(void* op1, void* op2, void* dest) {
+}
+
+/* TODO */
+void orb(void* op1, void* op2, void* dest) {
+}
+
+/* TODO */
+void xorb(void* op1, void* op2, void* dest) {
 }

@@ -25,6 +25,11 @@
 #define MUL_OP  0x05000000
 #define DIV_OP  0x06000000
 #define SETC_OP 0x07000000 /* Set an immediate constant */
+#define SLL_OP  0x09000000 /* TODO */
+#define SRL_OP  0x0A000000 /* TODO */
+#define AND_OP  0x0B000000 /* TODO */
+#define OR_OP   0x0C000000 /* TODO */
+#define XOR_OP  0x0D000000 /* TODO */
 
 #define FE(r1,r2) (FE_OP | ((r1) << 2*8) | (r2 << 8))
 #define ST(r1,r2) (ST_OP | ((r1) << 2*8) | (r2 << 8))
@@ -34,6 +39,11 @@
 #define MUL(r1,r2,r3) (MUL_OP | ((r1) << 2*8) | (r2 << 8) | (r3))
 #define DIV(r1,r2,r3) (DIV_OP | ((r1) << 2*8) | (r2 << 8) | (r3))
 #define SETC(c,r) (SETC_OP | ((r) << 2*8) | (0x0000FFFF & (c)))
+#define SLL(r1,r2,r3) /* TODO */
+#define SRL(r1,r2,r3) /* TODO */
+#define AND(r1,r2,r3) /* TODO */
+#define OR(r1,r2,r3) /* TODO */
+#define XOR(r1,r2,r3) /* TODO */
 
 /* Macro for getting instruction opcode */
 #define GETINSTR(instr) ((instr) >> 3*8)
@@ -96,5 +106,20 @@ void divide(void* op1, void* op2, void* dest);
 
 /* Set an immediate constant; TODO: allowable range? */
 void setc(void* num, void* dest, void* unused);
+
+/* Shift left logical */
+void sll(void* num, void* src, void* dest);
+
+/* Shift right logical */
+void srl(void* num, void* src, void* dest);
+
+/* Bitwise and */
+void andb(void* op1, void* op2, void* dest);
+
+/* Bitwise or */
+void orb(void* op1, void* op2, void* dest);
+
+/* Bitwise xor */
+void xorb(void* op1, void* op2, void* dest);
 
 #endif /* CPU_H */
