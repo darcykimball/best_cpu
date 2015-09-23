@@ -3,16 +3,18 @@
 
 #include <stdio.h>
 
-#define PQ_SIZE 128
-
 /* A min-heap priority queue */
 typedef int (*cmp_fn_ptr) (void*, void*); /* Comparison function used to 
                                              determine ordering */
 typedef struct priority_queue {
-  void* heap[PQ_SIZE]; /* Array of elements */
+  void** heap; /* Array of elements */
   cmp_fn_ptr cmp_fn; /* Comparison function */
-  uint32_t n_elems; /* Number of elements currently inside */
+  size_t n_elems; /* Number of elements currently inside */
+  size_t capacity; /* Number of elements this can hold */
 } priority_queue;
+
+/* Constructor */
+priority_queue* new_pq(size_t n, cmp_fn_ptr f);
 
 /* Add an element to the queue; returns whether the add was successful or not */
 bool add_pq(priority_queue* pq, void* elem);
