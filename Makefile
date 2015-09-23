@@ -19,6 +19,9 @@ test_fetch_store: test_fetch_store.o
 test_arithmetic: test_arithmetic.o
 	$(CC) -o test_arithmetic test_arithmetic.o cpu.o
 
+pqueue.o: pqueue.h pqueue.c
+	$(CC) $(CCFLAGS) pqueue.c
+
 clean:
 	rm -rf *.o $(EXES)
 

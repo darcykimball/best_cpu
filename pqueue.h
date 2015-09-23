@@ -2,8 +2,9 @@
 #define PQUEUE_H
 
 #include <stdio.h>
+#include <stdbool.h>
 
-/* A min-heap priority queue */
+/* A max-heap priority queue */
 typedef int (*cmp_fn_ptr) (void*, void*); /* Comparison function used to 
                                              determine ordering */
 typedef struct priority_queue {
@@ -27,4 +28,7 @@ void* remove_pq(priority_queue* pq);
  * or if the queue is empty */
 void* min_pq(priority_queue* pq);
 
+/* Destructor */
+void delete_pq(priority_queue** pq_ptr);
+        
 #endif /* PQUEUE_H */
