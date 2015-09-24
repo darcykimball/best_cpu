@@ -24,9 +24,9 @@ bool add_pq(priority_queue* pq, void* elem);
  * exceptional cases or if the queue is empty */
 void* remove_pq(priority_queue* pq);
 
-/* Return the minimum element in the queue; returns NULL for exceptiona l cases
+/* Return the maximum element in the queue; returns NULL for exceptiona l cases
  * or if the queue is empty */
-void* min_pq(priority_queue* pq);
+void* top_pq(priority_queue* pq);
 
 /* Destructor */
 void delete_pq(priority_queue** pq_ptr);

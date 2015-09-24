@@ -58,7 +58,7 @@ bool add_pq(priority_queue* pq, void* elem) {
 }
 
 void* remove_pq(priority_queue* pq) {
-  void* min_elem; /* The minimum element; return value */
+  void* max_elem; /* The maximum element; return value */
 
   /* Sanity checks */
   if (pq == NULL) {
@@ -71,19 +71,19 @@ void* remove_pq(priority_queue* pq) {
     return NULL;
   }
 
-  /* Retreive the minimum */
-  min_elem = pq->heap[0];
+  /* Retreive the maximum */
+  max_elem = pq->heap[0];
   pq->n_elems--;
 
   /* Re-establish order */
   pq->heap[0] = pq->heap[pq->n_elems - 1];
   reheap_down(pq, 0);
 
-  return min_elem;
+  return max_elem;
 }
 
 /* TODO */
-void* min_pq(priority_queue* pq) {
+void* top_pq(priority_queue* pq) {
   /* Sanity checks */
   if (pq == NULL) {
     fprintf(stderr, "min_pq: null pq!!\n");
