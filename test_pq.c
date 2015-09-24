@@ -27,7 +27,7 @@ int main() {
     printf("%d\n", *(int*)pq->heap[i]);            
   }
 
-  free(pq);
+  delete_pq(&pq);
 
   return 0;
 }

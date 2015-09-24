@@ -19,7 +19,7 @@ priority_queue* new_pq(size_t n, cmp_fn_ptr f) {
     return NULL;
   }
 
-  pq->heap = (void**)malloc(n);
+  pq->heap = (void**)malloc(n * sizeof(void*));
   if (pq == NULL) {
     fprintf(stderr, "new_pq: malloc failed\n");
     return NULL;
