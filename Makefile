@@ -25,7 +25,7 @@ test_pq: test_pq.o
 pqueue.o: pqueue.h pqueue.c
 	$(CC) $(CCFLAGS) -c pqueue.c
 
-test_pq.o: test_pq.c pqueue.o
+test_pq.o: test_pq.c pqueue.o test.h
 	$(CC) $(CCFLAGS) -c test_pq.c
 
 clean:
