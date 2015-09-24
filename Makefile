@@ -1,6 +1,6 @@
 CC = gcc
 CCFLAGS = -Wall
-EXES = test_fetch_store test_arithmetic
+EXES = test_fetch_store test_arithmetic test_pq
 
 all: $(EXES)
 
@@ -19,8 +19,14 @@ test_fetch_store: test_fetch_store.o
 test_arithmetic: test_arithmetic.o
 	$(CC) -o test_arithmetic test_arithmetic.o cpu.o
 
+test_pq: test_pq.o
+	$(CC) -o test_pq test_pq.o pqueue.o
+
 pqueue.o: pqueue.h pqueue.c
-	$(CC) $(CCFLAGS) pqueue.c
+	$(CC) $(CCFLAGS) -c pqueue.c
+
+test_pq.o: test_pq.c pqueue.o
+	$(CC) $(CCFLAGS) -c test_pq.c
 
 clean:
 	rm -rf *.o $(EXES)

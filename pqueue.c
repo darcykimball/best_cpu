@@ -3,6 +3,8 @@
 #include "pqueue.h"
 
 #define PARENT(i) (((i) - 1)/2) /* Get the index of the parent of a node */
+#define LCHILD(i) (2*(i) + 1) /* Get the index of the left child */
+#define RCHILD(i) (2*(i) + 2) /* Get the index of the left child */
 
 /* Helper functions for maintaining heap order */
 static void reheap_up(priority_queue* pq, size_t index);
@@ -49,8 +51,7 @@ bool add_pq(priority_queue* pq, void* elem) {
   }
 
   /* Add the element */
-  pq->heap[pq->n_elems] = elem;
-  pq->n_elems++; 
+  pq->heap[pq->n_elems++] = elem;
 
   /* Re-establish order */
   reheap_up(pq, pq->n_elems - 1);
@@ -72,14 +73,30 @@ void* remove_pq(priority_queue* pq) {
 
   /* Retreive the minimum */
   min_elem = pq->heap[0];
+  pq->n_elems--;
 
   /* Re-establish order */
+  pq->heap[0] = pq->heap[pq->n_elems - 1];
   reheap_down(pq, 0);
+
+  return min_elem;
 }
 
 /* TODO */
 void* min_pq(priority_queue* pq) {
+  /* Sanity checks */
+  if (pq == NULL) {
+    fprintf(stderr, "min_pq: null pq!!\n");
+    return NULL;
+  }
 
+  if (pq->n_elems == 0) {
+    fprintf(stderr, "min_pq: empty pq!!\n");
+    return NULL;
+  }
+
+  /* Retreive the minimum */
+  return pq->heap[0];
 }
 
 void delete_pq(priority_queue** pq_ptr) {
@@ -112,21 +129,65 @@ static void reheap_up(priority_queue* pq, size_t index) {
   }
 
   /* Move the element up as long as it's 'greater-than' its parent */
-  while (index > 0 && pq->cmp_fn(pq->heap[index], pq->heap[PARENT(index)]) > 0) {
-    /* Swap the current element with its parent */
-    swap(pq->heap[index], pq->heap[PARENT(index)]);
+  while (index > 0) {
+    if (pq->cmp_fn(pq->heap[index], pq->heap[PARENT(index)]) > 0) {
+      /* Swap the current element with its parent */
+      swap(pq->heap + index, pq->heap + PARENT(index));
 
-    /* Update current elem's index */
-    index = PARENT(index);
+      /* Update current elem's index */
+      index = PARENT(index);
+    } else {
+      /* The element is 'less' than its parent; done */
+      return;
+    }
   }
 }
 
 /* TODO */
 static void reheap_down(priority_queue* pq, size_t index) {
+  void* current; /* Temporary; current node */
+  void* left_child; /* Temporary */
+  void* right_child; /* Temporary */
+
   /* Sanity check */
   if (pq == NULL) {
     fprintf(stderr, "reheap_down: null pq!!\n");
     return;
+  }
+
+  /* Examine the current element's children and restructure accordingly */
+  while (index < pq->n_elems) {
+    current = pq->heap[index];
+    left_child = pq->heap[LCHILD(index)]; 
+    right_child = pq->heap[RCHILD(index)]; 
+
+    /* Compare with left child */
+    if (pq->cmp_fn(current, left_child) < 0) {
+      /* This is 'smaller' than the left; check the right */ 
+      if (pq->cmp_fn(current, right_child) < 0) {
+        /* This is smaller than both; check and choose the larger of the two
+         * children to replace itself */
+        if (pq->cmp_fn(left_child, right_child) < 0) {
+          /* Left is the smaller; replace using right */
+          swap(pq->heap + RCHILD(index), pq->heap + index);
+          index = RCHILD(index);
+        } else {
+          /* Right is the smaller; replace using left */
+          swap(pq->heap + LCHILD(index), pq->heap + index);
+          index = LCHILD(index);
+        }
+      }
+    } else {
+      /* This is bigger the left; check the right */
+      if (pq->cmp_fn(current, right_child) < 0) {
+        /* This one's smaller than the right; swap with it */ 
+        swap(pq->heap + RCHILD(index), pq->heap + index);
+        index = RCHILD(index);
+      } else {
+        /* This one's 'greater' than or equal to the right; we're done */
+        return;
+      }
+    }
   }
 }
 
