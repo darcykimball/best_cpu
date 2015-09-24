@@ -76,13 +76,12 @@ void* remove_pq(priority_queue* pq) {
   pq->n_elems--;
 
   /* Re-establish order */
-  pq->heap[0] = pq->heap[pq->n_elems - 1];
+  pq->heap[0] = pq->heap[pq->n_elems];
   reheap_down(pq, 0);
 
   return max_elem;
 }
 
-/* TODO */
 void* top_pq(priority_queue* pq) {
   /* Sanity checks */
   if (pq == NULL) {
@@ -143,7 +142,6 @@ static void reheap_up(priority_queue* pq, size_t index) {
   }
 }
 
-/* TODO */
 static void reheap_down(priority_queue* pq, size_t index) {
   void* current; /* Temporary; current node */
   void* left_child; /* Temporary */
@@ -161,6 +159,27 @@ static void reheap_down(priority_queue* pq, size_t index) {
     left_child = pq->heap[LCHILD(index)]; 
     right_child = pq->heap[RCHILD(index)]; 
 
+    /* 
+     * Null child cases
+     */
+
+    if (LCHILD(index) >= pq->n_elems) {
+      /* The left child is null; right child must be null, so we're done */
+      return; 
+    } else if (pq->cmp_fn(current, left_child) < 0) {
+      /* This is 'smaller' than the left; check if right child is null */ 
+      if (RCHILD(index) >= pq->n_elems) {
+        /* It is; swap with left */
+        swap(pq->heap + LCHILD(index), pq->heap + index);
+        index = LCHILD(index);
+        return;
+      }
+    }
+
+    /*
+     * Cases where both children are present
+     */
+
     /* Compare with left child */
     if (pq->cmp_fn(current, left_child) < 0) {
       /* This is 'smaller' than the left; check the right */ 
@@ -176,6 +195,10 @@ static void reheap_down(priority_queue* pq, size_t index) {
           swap(pq->heap + LCHILD(index), pq->heap + index);
           index = LCHILD(index);
         }
+      } else {
+        /* The right is 'bigger'; swap with it */
+        swap(pq->heap + RCHILD(index), pq->heap + index);
+        index = RCHILD(index);
       }
     } else {
       /* This is bigger the left; check the right */
