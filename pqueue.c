@@ -196,9 +196,9 @@ static void reheap_down(priority_queue* pq, size_t index) {
           index = LCHILD(index);
         }
       } else {
-        /* The right is 'bigger'; swap with it */
-        swap(pq->heap + RCHILD(index), pq->heap + index);
-        index = RCHILD(index);
+        /* The right is 'smaller' than this; swap with the left */
+        swap(pq->heap + LCHILD(index), pq->heap + index);
+        index = LCHILD(index);
       }
     } else {
       /* This is bigger the left; check the right */
