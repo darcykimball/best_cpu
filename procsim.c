@@ -31,6 +31,9 @@ void load_program(uint32_t* program, size_t prog_size, const char* name,
 
   /* Update offset */
   *start_offset += prog_size + STK_MAX;
+
+  /* FIXME: remove!! */
+  fprintf(stderr, "*start_offset = %u\n", *start_offset);
 }
 
 uint32_t foo_program[] = {
@@ -92,18 +95,23 @@ int main() {
   memset(mem.data, 0, MEMSIZE);
   memset(&regs, 0, sizeof(registers));
 
+  /* Initialize process table to zero throughout (implicitly setting state
+   * equal to PR_EMPTY in the process) FIXME */
+  memset(proc_table, 0, sizeof(proc_table));
+
   /* 'Load' programs into memory and initialize process table */
   offset = 0;
   load_program(foo_program, sizeof(foo_program), "foo", &mem, &offset, proc_table, 0);
-  load_program(bar_program, sizeof(bar_program), "bar", &mem, &offset, proc_table, 0);
-  load_program(baz_program, sizeof(baz_program), "baz", &mem, &offset, proc_table, 0);
-  load_program(quux_program, sizeof(quux_program), "quux", &mem, &offset, proc_table, 0);
-  load_program(fubar_program, sizeof(fubar_program), "fubar", &mem, &offset, proc_table, 0);
-  load_program(grok_program, sizeof(grok_program), "grok", &mem, &offset, proc_table, 0);
+  load_program(bar_program, sizeof(bar_program), "bar", &mem, &offset, proc_table, 1);
+  load_program(baz_program, sizeof(baz_program), "baz", &mem, &offset, proc_table, 2);
+  load_program(quux_program, sizeof(quux_program), "quux", &mem, &offset, proc_table, 3);
+  load_program(fubar_program, sizeof(fubar_program), "fubar", &mem, &offset, proc_table, 4);
+  load_program(grok_program, sizeof(grok_program), "grok", &mem, &offset, proc_table, 5);
 
   /* Dump initial state */
   dump_registers(&regs);
   dump_memory(&mem);
+  dump_proc_table(&proc_table, sizeof(proc_table)/sizeof(proc_entry));
 
   return EXIT_SUCCESS;
 }

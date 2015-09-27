@@ -22,8 +22,8 @@ test_arithmetic: test_arithmetic.o
 test_pq: test_pq.o pqueue.o
 	$(CC) -o test_pq test_pq.o pqueue.o
 
-procsim: procsim.o pqueue.o cpu.o proctab.h
-	$(CC) -o procsim procsim.o pqueue.o cpu.o
+procsim: procsim.o pqueue.o cpu.o proctab.o
+	$(CC) -o procsim procsim.o pqueue.o cpu.o proctab.o
 
 pqueue.o: pqueue.h pqueue.c
 	$(CC) $(CCFLAGS) -c pqueue.c
@@ -33,6 +33,9 @@ test_pq.o: test_pq.c pqueue.o test.h
 
 procsim.o: procsim.c
 	$(CC) $(CCFLAGS) -c procsim.c
+
+proctab.o: proctab.h proctab.c
+	$(CC) $(CCFLAGS) -c proctab.c
 
 clean:
 	rm -rf *.o $(EXES)
