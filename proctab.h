@@ -30,10 +30,6 @@ typedef struct proc_entry {
   char name[PROC_NAME_LEN + 1]; 
 } proc_entry;
 
-/* Initialize a process table entry */
-/* FIXME: needed?? */
-void init_proc_entry(proc_entry* prentry);
-
 /* Print out the contents of a process table, nonempty entries only */
 void dump_proc_table(proc_entry* proc_table, size_t n);
 
