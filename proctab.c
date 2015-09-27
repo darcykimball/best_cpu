@@ -14,3 +14,7 @@ void dump_proc_table(proc_entry* proc_table, size_t n) {
     printf("  name = %s\n", proc_table[i].name);
   }
 }
+
+int cmp_proc_entry(void* pe1, void* pe2) {
+  return ((proc_entry*)pe1)->priority - ((proc_entry*)pe2)->priority;
+}

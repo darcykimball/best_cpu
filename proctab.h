@@ -27,10 +27,13 @@ typedef struct proc_entry {
   uint32_t stack_ptr; /* Unsigned 32-bit int since this corresponds to an
                          address in our virtual machine */
   uint32_t stack_len; /* Max limit for stack size */
-  char name[PROC_NAME_LEN + 1]; 
+  char name[PROC_NAME_LEN + 1];  /* User-given name of the process */ 
 } proc_entry;
 
 /* Print out the contents of a process table, nonempty entries only */
 void dump_proc_table(proc_entry* proc_table, size_t n);
+
+/* Comparison function to use when inserting in priority queues */
+int cmp_proc_entry(void* pe1, void* pe2);
 
 #endif /* PROC_TAB */
