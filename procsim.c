@@ -28,8 +28,8 @@ void load_program(uint32_t* program, size_t prog_size, const char* name,
   /* Initialize process entry and put it in the table (zero out regs) */  
   proc_table[pid].state = PR_READY;
   proc_table[pid].priority = PROC_TAB_SIZE, /* Highest priority by default */
-  proc_table[pid].stack_ptr =  *start_offset + prog_size;
-  proc_table[pid].stack_len =  STK_MAX;
+  proc_table[pid].stack_ptr = *start_offset + prog_size;
+  proc_table[pid].stack_len = STK_MAX;
   proc_table[pid].pid = pid;
   strcpy(proc_table[pid].name, name);
   memset(&(proc_table[pid].regs), 0, sizeof(registers));
@@ -47,6 +47,20 @@ void init_ready_queue(priority_queue* ready_queue, proc_entry* proc_table, size_
     if (proc_table[i].state == PR_READY) {
       add_pq(ready_queue, proc_table + i);
     } 
+  }
+}
+
+/* Print out the ready-queue
+ * XXX: internally, it's a max-heap, so the elements are in heap order, not in linear order
+ */
+void dump_ready_queue(priority_queue* ready_queue) {
+  int i;
+  proc_entry* prentry = (proc_entry*)top_pq(ready_queue);
+
+  printf("FRONT OF QUEUE\n");
+  for (i = 0; i < ready_queue->n_elems; i++) {
+    printf("PID = %u, name = %s, priority = %d, state = %u\n", 
+      prentry->pid, prentry->name, prentry->priority, prentry->state);
   }
 }
 
@@ -162,6 +176,8 @@ int main() {
   printf("*** Initial state: ***\n");
   dump_registers(&regs);
   dump_memory(&mem);
+
+  printf("*** Process table: ***\n");
   dump_proc_table(proc_table, sizeof(proc_table)/sizeof(proc_entry));
 
   /* Start running the damn thing. We start 'in medias res' with the null process (pid = 0) */
@@ -175,12 +191,12 @@ int main() {
   ready_queue = NULL;
 
   for (i = 0; i < N_SIM_ITER; i++) {
-    printf("*** On iteration %d\n ***", i);
+    printf("*** On iteration %d ***\n", i);
 
     /* Execute for a random number of cycles */
     time_slice = rand() % MAX_TIME + 1;
 
-    printf("*** This time slice = %dcycles\n", time_slice);
+    printf("*** This time slice = %d cycles***\n", time_slice);
     printf("*** Executing process %d ***\n", current_pid);
 
     while (time_slice > 0) {
@@ -195,6 +211,7 @@ int main() {
     assign_priorities_states(proc_table, PROC_TAB_SIZE);
 
     printf("*** Assigned new priorities/states for all processes ***\n");
+    printf("*** New process table: ***\n");
     dump_proc_table(proc_table, PROC_TAB_SIZE);
 
     /* Set up the ready queue */
@@ -204,6 +221,9 @@ int main() {
 
     ready_queue = new_pq(PROC_TAB_SIZE, cmp_proc_entry);
     init_ready_queue(ready_queue, proc_table, sizeof(proc_table)/sizeof(proc_entry));
+
+    printf("*** New ready queue: ***\n");
+    dump_ready_queue(ready_queue);
 
     /* Run the scheduler */
     printf("*** Calling the scheduler... ***\n");

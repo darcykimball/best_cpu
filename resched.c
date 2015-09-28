@@ -15,10 +15,13 @@ void resched(proc_entry* proc_table, priority_queue* ready_queue, registers* reg
  
   /* Check the highest-priority process on the ready queue and switch to it if 
      it has greater or equal priority */
-  next_ready = (proc_entry*)remove_pq(ready_queue);
+  next_ready = (proc_entry*)top_pq(ready_queue);
   curr_proc = &(proc_table[*current_pid]);
 
   if (next_ready->priority >= curr_proc->priority) {
+    /* Switch it in; remove it first */
+    remove_pq(ready_queue);
+
     /* Update the states of the two processes */
     next_ready->state = PR_CURR;
     curr_proc->state = PR_READY;
