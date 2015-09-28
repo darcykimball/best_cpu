@@ -63,22 +63,25 @@ void dump_memory(memory* mem) {
 
 void execute(registers* regs, memory* mem) {
   int instr_index; /* Instruction index (for table) */
+  uint32_t instr; /* The raw instruction */
   int nreg1; /* Index of first register in instruction */
   int nreg2; /* Index of second register in instruction */
   int nreg3; /* Index of second register in instruction */
 
   /* 'Decode' instruction */
-  instr_index = GETINSTR(regs->prog_counter);
+  instr = *(uint32_t*)(mem->data + regs->prog_counter);
+  instr_index = GETINSTR(instr);
 
 #ifdef DEBUG
+  fprintf(stderr, "instr = %08x\n", instr);
   fprintf(stderr, "prog_counter = %08x\n", regs->prog_counter);
   fprintf(stderr, "Executing instruction # %u\n", instr_index);
 #endif
 
   /* Get register args */
-  nreg1 = GETOP1(regs->prog_counter);
-  nreg2 = GETOP2(regs->prog_counter);
-  nreg3 = GETOP3(regs->prog_counter);
+  nreg1 = GETOP1(instr);
+  nreg2 = GETOP2(instr);
+  nreg3 = GETOP3(instr);
 
 #ifdef DEBUG
   fprintf(stderr, "nreg1 = %u, reg1 = %08x\n", nreg1, regs->general[nreg1]);
