@@ -8,7 +8,7 @@ int main(void)
 {
 	/* The 6 process states */
 	char* states[6] = {"Current", "Ready", "Waiting", "Receiving", "Sleeping", "Suspended"};
-
+	
 	/* Current 6 Priority Numbers*/
 	int* priNums[6] = { 1,2,3,4,5,6 };
 
