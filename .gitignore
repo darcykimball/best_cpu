@@ -3,3 +3,5 @@
 test_arithmetic
 test_fetch_store
 test_pq
+procsim
+test_jmp

@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include "cpu.h"
 
-#define DEBUG
+//#define DEBUG
+#define VERBOSE
 
 const char* reg_names[] = { "A", "B", "C", "D", "E", "F", "G", "H" };
 
@@ -15,7 +16,8 @@ instr_ptr instr_table[] = {
   sub,
   mul,
   divide,
-  setc
+  setc,
+  jmp
 };
 
 /* Dump contents of registers */
@@ -63,22 +65,25 @@ void dump_memory(memory* mem) {
 
 void execute(registers* regs, memory* mem) {
   int instr_index; /* Instruction index (for table) */
+  uint32_t instr; /* The raw instruction */
   int nreg1; /* Index of first register in instruction */
   int nreg2; /* Index of second register in instruction */
   int nreg3; /* Index of second register in instruction */
 
   /* 'Decode' instruction */
-  instr_index = GETINSTR(regs->prog_counter);
+  instr = *(uint32_t*)(mem->data + regs->prog_counter);
+  instr_index = GETINSTR(instr);
 
-#ifdef DEBUG
-  fprintf(stderr, "prog_counter = %08x\n", regs->prog_counter);
-  fprintf(stderr, "Executing instruction # %u\n", instr_index);
+#ifdef VERBOSE
+  printf("Executing instruction # %u\n", instr_index);
+  printf("instr = %08x\n", instr);
+  printf("prog_counter = %08x\n", regs->prog_counter);
 #endif
 
   /* Get register args */
-  nreg1 = GETOP1(regs->prog_counter);
-  nreg2 = GETOP2(regs->prog_counter);
-  nreg3 = GETOP3(regs->prog_counter);
+  nreg1 = GETOP1(instr);
+  nreg2 = GETOP2(instr);
+  nreg3 = GETOP3(instr);
 
 #ifdef DEBUG
   fprintf(stderr, "nreg1 = %u, reg1 = %08x\n", nreg1, regs->general[nreg1]);
@@ -92,12 +97,22 @@ void execute(registers* regs, memory* mem) {
     instr_table[instr_index](mem, regs->general + nreg1, regs->general + nreg2);
   } else if (instr_index == GETINSTR(SETC_OP)) {
     /* This is a set constant instruction; have to pass the constant value */
-    instr_table[instr_index]((void*)GETCONST(regs->prog_counter),
+    instr_table[instr_index]((void*)GETCONST(instr),
       regs->general + nreg1, NULL);
+  } else if (instr_index == GETINSTR(JMP_OP)) {
+    /* This is a jump; have to pass constant and program counter */
+    instr_table[instr_index]((void*)GETCONST(instr),
+      &(regs->prog_counter), NULL);
+
+    /* We don't want to increment program counter after a jump */
+    return; 
   } else {
     instr_table[instr_index](regs->general + nreg1, regs->general + nreg2,
       regs->general + nreg3);
   }
+
+  /* Increment program counter */
+  regs->prog_counter += sizeof(uint32_t);
 }
 
 void fetch(void* mem, void* addr, void* dest) {
@@ -169,4 +184,8 @@ void orb(void* op1, void* op2, void* dest) {
 
 /* TODO */
 void xorb(void* op1, void* op2, void* dest) {
+}
+
+void jmp(void* num, void* pc, void* unused) {
+  *(int32_t*)pc = *(int32_t*)pc + (int16_t)num * sizeof(uint32_t);
 }
