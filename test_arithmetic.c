@@ -48,7 +48,7 @@ int main() {
     printf("Executing instruction %u in test_program\n", i);
 
     /* Set program counter */
-    regs.prog_counter = test_program[i];
+    regs.prog_counter = OS_SIZE + i * sizeof(uint32_t);
 
     /* Execute instruction */
     execute(&regs, &mem);
