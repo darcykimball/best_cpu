@@ -19,17 +19,13 @@ void load_program(uint32_t* program, size_t prog_size, const char* name,
   /* 'Allocate'/init stack space */
   memset(mem->data + *start_offset + prog_size, STK_GARBAGE, STK_MAX);
   
-  /* Initialize process entry and put it in the table */  
-  proc_table[pid] = (proc_entry) {
-    PR_READY,
-    PROC_TAB_SIZE, /* Highest priority by default */
-    *start_offset + prog_size, /* Again, the stack pointer 
-                                 holds the virtual address*/ 
-    STK_MAX,
-    "noname"
-  };
-
+  /* Initialize process entry and put it in the table (zero out regs) */  
+  proc_table[pid].state = PR_READY;
+  proc_table[pid].priority = PROC_TAB_SIZE, /* Highest priority by default */
+  proc_table[pid].stack_ptr =  *start_offset + prog_size;
+  proc_table[pid].stack_len =  STK_MAX;
   strcpy(proc_table[pid].name, name);
+  memset(&(proc_table[pid].regs), 0, sizeof(registers));
 
   /* Update offset */
   *start_offset += prog_size + STK_MAX;

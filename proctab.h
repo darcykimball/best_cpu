@@ -2,6 +2,7 @@
 #define PROC_TAB
 
 #include <stdint.h>
+#include "cpu.h"
 
 #define PROC_NAME_LEN 6
 
@@ -27,6 +28,7 @@ typedef struct proc_entry {
   uint32_t stack_ptr; /* Unsigned 32-bit int since this corresponds to an
                          address in our virtual machine */
   uint32_t stack_len; /* Max limit for stack size */
+  registers regs; /* Registers associated with the context */
   char name[PROC_NAME_LEN + 1];  /* User-given name of the process */ 
 } proc_entry;
 
