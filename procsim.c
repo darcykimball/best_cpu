@@ -98,11 +98,6 @@ void assign_priorities_states(proc_entry* proc_table, size_t n) {
   } 
 }
 
-/* The scheduler */
-void resched(proc_entry* proc_table, priority_queue* ready_queue, registers* regs) {
-  /* TODO */
-}
-
 uint32_t null_program[] = {
   SETC(0xDEAD, 0),
   JMP(-1),
