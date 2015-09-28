@@ -6,6 +6,7 @@
 #include "cpu.h"
 #include "pqueue.h"
 #include "proctab.h"
+#include "resched.h"
 
 int GetRand(int min, int max);
 
@@ -29,6 +30,7 @@ void load_program(uint32_t* program, size_t prog_size, const char* name,
   proc_table[pid].priority = PROC_TAB_SIZE, /* Highest priority by default */
   proc_table[pid].stack_ptr =  *start_offset + prog_size;
   proc_table[pid].stack_len =  STK_MAX;
+  proc_table[pid].pid = pid;
   strcpy(proc_table[pid].name, name);
   memset(&(proc_table[pid].regs), 0, sizeof(registers));
 
@@ -51,51 +53,23 @@ void init_ready_queue(priority_queue* ready_queue, proc_entry* proc_table, size_
 /* Assign random priorities and states to all processes except the null process */
 void assign_priorities_states(proc_entry* proc_table, size_t n) {
   int i; /* Processes in process table*/
-  int j; /* Number of values*/
   int r; /* Random value*/
 
   /* For every process in process table, determine 2 random values
-	 (1 for priority and 1 for process state*/
-  for (i = 1; i < n; i++) {
-	  for (j = 0; j < 2; j++)
-	  {
-		  r = GetRand(0, 6);
-		  if (j == 0)
-		  {
-			  /* Determine Priority based on random value*/
-				 proc_table[i].priority = r;
-		  }
+	 (1 for priority and 1 for process state) */
+  for (i = 0; i < n; i++) {
+		/* Determine process state based on random value*/
+    if (proc_table[i].state != PR_EMPTY) {
+      /* XXX: can't be PR_CURR or PR_EMPTY since at the time of generating new states,
+       * there is a currently executing process */
+      r = GetRand(PR_READY, PR_SUSP); /* from 2 to PR_SUSP, hopefully */
 
-		  /* Determine process state based on random value*/
-		  if (j == 1)
-		  {
-			  switch (r)
-			  {
-			  case 0:
-				  proc_table[i].state = PR_CURR;
-				  break;
-			  case 1:
-				  proc_table[i].state = PR_CURR;
-				  break;
-			  case 2:
-				  proc_table[i].state = PR_READY;
-				  break;
-			  case 3:
-				  proc_table[i].state = PR_WAIT;
-				  break;
-			  case 4:
-				  proc_table[i].state = PR_RECV;
-				  break;
-			  case 5:
-				  proc_table[i].state = PR_SLEEP;
-				  break;
-			  case 6:
-				  proc_table[i].state = PR_SUSP;
-				  break;
-			  }
-		  }
-	  }
-  } 
+      proc_table[i].state = r;
+    }
+
+    /* Determine process priority */
+    proc_table[i].priority = GetRand(1, PROC_TAB_SIZE); /* Runs from 1 to max # of proc's */
+  }
 }
 
 uint32_t null_program[] = {
@@ -194,8 +168,13 @@ int main() {
   ready_queue = NULL;
 
   for (i = 0; i < N_SIM_ITER; i++) {
+    printf("*** On iteration %d\n ***", i);
+
     /* Execute for a random number of cycles */
     time_slice = rand() % MAX_TIME + 1;
+
+    printf("*** This time slice = %dcycles\n", time_slice);
+    printf("*** Executing process %d ***\n", current_pid);
 
     while (time_slice > 0) {
       /* XXX: program counter is updated in execute() */
@@ -203,8 +182,13 @@ int main() {
       time_slice--;
     }
 
+    printf("*** Stopping execution of process %d ***\n", current_pid);
+
     /* Randomly assign priorities to the processes */
     assign_priorities_states(proc_table, PROC_TAB_SIZE);
+
+    printf("*** Assigned new priorities/states for all processes ***\n");
+    dump_proc_table(proc_table, PROC_TAB_SIZE);
 
     /* Set up the ready queue */
     if (ready_queue != NULL) {
@@ -215,8 +199,13 @@ int main() {
     init_ready_queue(ready_queue, proc_table, sizeof(proc_table)/sizeof(proc_entry));
 
     /* Run the scheduler */
-    resched(proc_table, ready_queue, &regs);
+    printf("*** Calling the scheduler... ***\n");
+
+    resched(proc_table, ready_queue, &regs, &current_pid);
   }
+
+  /* Cleanup */
+  delete_pq(&ready_queue);
 
   return EXIT_SUCCESS;
 }

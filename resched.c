@@ -1,7 +1,7 @@
 #include "resched.h"
 
 void resched(proc_entry* proc_table, priority_queue* ready_queue, registers* regs,
-  uint32_t current_pid) {
+  uint32_t* current_pid) {
   proc_entry* next_ready; /* Next process on ready queue */
   proc_entry* curr_proc; /* 'Current' process that was just running before this */
     
@@ -16,7 +16,7 @@ void resched(proc_entry* proc_table, priority_queue* ready_queue, registers* reg
   /* Check the highest-priority process on the ready queue and switch to it if 
      it has greater or equal priority */
   next_ready = (proc_entry*)remove_pq(ready_queue);
-  curr_proc = &(proc_table[current_pid]);
+  curr_proc = &(proc_table[*current_pid]);
 
   if (next_ready->priority >= curr_proc->priority) {
     /* Update the states of the two processes */
@@ -25,6 +25,9 @@ void resched(proc_entry* proc_table, priority_queue* ready_queue, registers* reg
 
     /* Context switch with the next ready process */
     context_switch(curr_proc, next_ready, regs);
+
+    /* Update current pid */
+    *current_pid = next_ready->pid;
   }
 
   /* Implicit return: if we got here, there was no eligible process to run,

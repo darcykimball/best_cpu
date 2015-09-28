@@ -7,7 +7,7 @@
 
 /* A scheduler */
 void resched(proc_entry* proc_table, priority_queue* ready_queue, registers* regs, 
-  uint32_t current_pid);
+  uint32_t* current_pid);
 
 /* Context switcher */
 void context_switch(proc_entry* curr_proc, proc_entry* next_proc, registers* regs);

@@ -33,6 +33,8 @@ typedef struct proc_entry {
   uint32_t stack_len; /* Max limit for stack size */
   registers regs; /* Registers associated with the context */
   char name[PROC_NAME_LEN + 1];  /* User-given name of the process */ 
+  uint32_t pid; /* Process id; redundant but including it here since it makes
+                   working with my priority queue easier */
 } proc_entry;
 
 /* Print out the contents of a process table, nonempty entries only */
