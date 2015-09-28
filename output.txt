@@ -1,0 +1,1138 @@
+*** Initial state: ***
+General purpose:
+Register A: 00000000
+Register B: 00000000
+Register C: 00000000
+Register D: 00000000
+Register E: 00000000
+Register F: 00000000
+Register G: 00000000
+Register H: 00000000
+Program counter:
+00000000
+Memory address:
+00000000
+Memory data:
+00000000
+Flags:
+00000000
+Main memory:
+0700dead
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700c0de
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700baaa
+02000400
+0800fffe
+aaaaaaaa
+aaaaaaaa
+07001cee
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700face
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700beef
+03000500
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700babe
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+00000000
+*** Process table: ***
+process id = 0
+  state = 2
+  priority = 8
+  stack_ptr = 00000008
+  stack_len = 8
+  name = NULL
+process id = 1
+  state = 2
+  priority = 8
+  stack_ptr = 0000002c
+  stack_len = 8
+  name = foo
+process id = 2
+  state = 2
+  priority = 8
+  stack_ptr = 00000040
+  stack_len = 8
+  name = bar
+process id = 3
+  state = 2
+  priority = 8
+  stack_ptr = 00000064
+  stack_len = 8
+  name = baz
+process id = 4
+  state = 2
+  priority = 8
+  stack_ptr = 0000007c
+  stack_len = 8
+  name = quux
+process id = 5
+  state = 2
+  priority = 8
+  stack_ptr = 00000090
+  stack_len = 8
+  name = fubar
+process id = 6
+  state = 2
+  priority = 8
+  stack_ptr = 000000b4
+  stack_len = 8
+  name = grok
+process id = 7
+  state = 0
+  priority = 0
+  stack_ptr = 00000000
+  stack_len = 0
+  name = 
+*** On iteration 0 ***
+*** This time slice = 8 cycles***
+*** Executing process 0 ***
+Executing instruction # 7
+instr = 0700dead
+prog_counter = 00000000
+Executing instruction # 8
+instr = 0800ffff
+prog_counter = 00000004
+Executing instruction # 7
+instr = 0700dead
+prog_counter = 00000000
+Executing instruction # 8
+instr = 0800ffff
+prog_counter = 00000004
+Executing instruction # 7
+instr = 0700dead
+prog_counter = 00000000
+Executing instruction # 8
+instr = 0800ffff
+prog_counter = 00000004
+Executing instruction # 7
+instr = 0700dead
+prog_counter = 00000000
+Executing instruction # 8
+instr = 0800ffff
+prog_counter = 00000004
+*** Stopping execution of process 0 ***
+*** Assigned new priorities/states for all processes ***
+*** New process table: ***
+process id = 0
+  state = 1
+  priority = 2
+  stack_ptr = 00000008
+  stack_len = 8
+  name = NULL
+process id = 1
+  state = 6
+  priority = 8
+  stack_ptr = 0000002c
+  stack_len = 8
+  name = foo
+process id = 2
+  state = 3
+  priority = 5
+  stack_ptr = 00000040
+  stack_len = 8
+  name = bar
+process id = 3
+  state = 5
+  priority = 4
+  stack_ptr = 00000064
+  stack_len = 8
+  name = baz
+process id = 4
+  state = 4
+  priority = 6
+  stack_ptr = 0000007c
+  stack_len = 8
+  name = quux
+process id = 5
+  state = 2
+  priority = 6
+  stack_ptr = 00000090
+  stack_len = 8
+  name = fubar
+process id = 6
+  state = 5
+  priority = 4
+  stack_ptr = 000000b4
+  stack_len = 8
+  name = grok
+process id = 7
+  state = 0
+  priority = 6
+  stack_ptr = 00000000
+  stack_len = 0
+  name = 
+*** New ready queue: ***
+FRONT OF QUEUE
+PID = 5, name = fubar, priority = 6, state = 2
+*** Calling the scheduler... ***
+*** Regs/memory before calling resched()/context switch: ***
+General purpose:
+Register A: 0000dead
+Register B: 00000000
+Register C: 00000000
+Register D: 00000000
+Register E: 00000000
+Register F: 00000000
+Register G: 00000000
+Register H: 00000000
+Program counter:
+00000000
+Memory address:
+00000000
+Memory data:
+00000000
+Flags:
+00000000
+Main memory:
+0700dead
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700c0de
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700baaa
+02000400
+0800fffe
+aaaaaaaa
+aaaaaaaa
+07001cee
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700face
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700beef
+03000500
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700babe
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+00000000
+*** Regs/memory after calling resched()/context switch: ***
+General purpose:
+Register A: 00000000
+Register B: 00000000
+Register C: 00000000
+Register D: 00000000
+Register E: 00000000
+Register F: 00000000
+Register G: 00000000
+Register H: 00000000
+Program counter:
+00000084
+Memory address:
+00000000
+Memory data:
+00000000
+Flags:
+00000000
+Main memory:
+0700dead
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700c0de
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700baaa
+02000400
+0800fffe
+aaaaaaaa
+aaaaaaaa
+07001cee
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700face
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700beef
+03000500
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700babe
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+00000000
+*** On iteration 1 ***
+*** This time slice = 2 cycles***
+*** Executing process 5 ***
+Executing instruction # 7
+instr = 0700beef
+prog_counter = 00000084
+Executing instruction # 3
+instr = 03000500
+prog_counter = 00000088
+*** Stopping execution of process 5 ***
+*** Assigned new priorities/states for all processes ***
+*** New process table: ***
+process id = 0
+  state = 4
+  priority = 6
+  stack_ptr = 00000008
+  stack_len = 8
+  name = NULL
+process id = 1
+  state = 2
+  priority = 2
+  stack_ptr = 0000002c
+  stack_len = 8
+  name = foo
+process id = 2
+  state = 2
+  priority = 5
+  stack_ptr = 00000040
+  stack_len = 8
+  name = bar
+process id = 3
+  state = 5
+  priority = 5
+  stack_ptr = 00000064
+  stack_len = 8
+  name = baz
+process id = 4
+  state = 2
+  priority = 4
+  stack_ptr = 0000007c
+  stack_len = 8
+  name = quux
+process id = 5
+  state = 1
+  priority = 4
+  stack_ptr = 00000090
+  stack_len = 8
+  name = fubar
+process id = 6
+  state = 5
+  priority = 5
+  stack_ptr = 000000b4
+  stack_len = 8
+  name = grok
+process id = 7
+  state = 0
+  priority = 3
+  stack_ptr = 00000000
+  stack_len = 0
+  name = 
+*** New ready queue: ***
+FRONT OF QUEUE
+PID = 2, name = bar, priority = 5, state = 2
+PID = 1, name = foo, priority = 2, state = 2
+PID = 4, name = quux, priority = 4, state = 2
+*** Calling the scheduler... ***
+*** Regs/memory before calling resched()/context switch: ***
+General purpose:
+Register A: 0000beef
+Register B: 00000000
+Register C: 00000000
+Register D: 00000000
+Register E: 00000000
+Register F: 00000000
+Register G: 00000000
+Register H: 00000000
+Program counter:
+0000008c
+Memory address:
+00000000
+Memory data:
+00000000
+Flags:
+00000000
+Main memory:
+0700dead
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700c0de
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700baaa
+02000400
+0800fffe
+aaaaaaaa
+aaaaaaaa
+07001cee
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700face
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700beef
+03000500
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700babe
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+00000000
+*** Regs/memory after calling resched()/context switch: ***
+General purpose:
+Register A: 00000000
+Register B: 00000000
+Register C: 00000000
+Register D: 00000000
+Register E: 00000000
+Register F: 00000000
+Register G: 00000000
+Register H: 00000000
+Program counter:
+00000034
+Memory address:
+00000000
+Memory data:
+00000000
+Flags:
+00000000
+Main memory:
+0700dead
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700c0de
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700baaa
+02000400
+0800fffe
+aaaaaaaa
+aaaaaaaa
+07001cee
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700face
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700beef
+03000500
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700babe
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+00000000
+*** On iteration 2 ***
+*** This time slice = 1 cycles***
+*** Executing process 2 ***
+Executing instruction # 7
+instr = 0700baaa
+prog_counter = 00000034
+*** Stopping execution of process 2 ***
+*** Assigned new priorities/states for all processes ***
+*** New process table: ***
+process id = 0
+  state = 6
+  priority = 5
+  stack_ptr = 00000008
+  stack_len = 8
+  name = NULL
+process id = 1
+  state = 5
+  priority = 3
+  stack_ptr = 0000002c
+  stack_len = 8
+  name = foo
+process id = 2
+  state = 1
+  priority = 2
+  stack_ptr = 00000040
+  stack_len = 8
+  name = bar
+process id = 3
+  state = 2
+  priority = 4
+  stack_ptr = 00000064
+  stack_len = 8
+  name = baz
+process id = 4
+  state = 6
+  priority = 5
+  stack_ptr = 0000007c
+  stack_len = 8
+  name = quux
+process id = 5
+  state = 6
+  priority = 4
+  stack_ptr = 00000090
+  stack_len = 8
+  name = fubar
+process id = 6
+  state = 2
+  priority = 1
+  stack_ptr = 000000b4
+  stack_len = 8
+  name = grok
+process id = 7
+  state = 0
+  priority = 7
+  stack_ptr = 00000000
+  stack_len = 0
+  name = 
+*** New ready queue: ***
+FRONT OF QUEUE
+PID = 3, name = baz, priority = 4, state = 2
+PID = 6, name = grok, priority = 1, state = 2
+*** Calling the scheduler... ***
+*** Regs/memory before calling resched()/context switch: ***
+General purpose:
+Register A: 0000baaa
+Register B: 00000000
+Register C: 00000000
+Register D: 00000000
+Register E: 00000000
+Register F: 00000000
+Register G: 00000000
+Register H: 00000000
+Program counter:
+00000038
+Memory address:
+00000000
+Memory data:
+00000000
+Flags:
+00000000
+Main memory:
+0700dead
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700c0de
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700baaa
+02000400
+0800fffe
+aaaaaaaa
+aaaaaaaa
+07001cee
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700face
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700beef
+03000500
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700babe
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+00000000
+*** Regs/memory after calling resched()/context switch: ***
+General purpose:
+Register A: 00000000
+Register B: 00000000
+Register C: 00000000
+Register D: 00000000
+Register E: 00000000
+Register F: 00000000
+Register G: 00000000
+Register H: 00000000
+Program counter:
+00000048
+Memory address:
+00000000
+Memory data:
+00000000
+Flags:
+00000000
+Main memory:
+0700dead
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700c0de
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700baaa
+02000400
+0800fffe
+aaaaaaaa
+aaaaaaaa
+07001cee
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700face
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700beef
+03000500
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700babe
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+00000000
+*** On iteration 3 ***
+*** This time slice = 7 cycles***
+*** Executing process 3 ***
+Executing instruction # 7
+instr = 07001cee
+prog_counter = 00000048
+Executing instruction # 2
+instr = 02000400
+prog_counter = 0000004c
+Executing instruction # 7
+instr = 07010100
+prog_counter = 00000050
+Executing instruction # 5
+instr = 05010000
+prog_counter = 00000054
+Executing instruction # 5
+instr = 05010000
+prog_counter = 00000058
+Executing instruction # 3
+instr = 03000400
+prog_counter = 0000005c
+Executing instruction # 8
+instr = 0800ffff
+prog_counter = 00000060
+*** Stopping execution of process 3 ***
+*** Assigned new priorities/states for all processes ***
+*** New process table: ***
+process id = 0
+  state = 4
+  priority = 6
+  stack_ptr = 00000008
+  stack_len = 8
+  name = NULL
+process id = 1
+  state = 6
+  priority = 8
+  stack_ptr = 0000002c
+  stack_len = 8
+  name = foo
+process id = 2
+  state = 4
+  priority = 8
+  stack_ptr = 00000040
+  stack_len = 8
+  name = bar
+process id = 3
+  state = 1
+  priority = 4
+  stack_ptr = 00000064
+  stack_len = 8
+  name = baz
+process id = 4
+  state = 4
+  priority = 4
+  stack_ptr = 0000007c
+  stack_len = 8
+  name = quux
+process id = 5
+  state = 6
+  priority = 8
+  stack_ptr = 00000090
+  stack_len = 8
+  name = fubar
+process id = 6
+  state = 2
+  priority = 6
+  stack_ptr = 000000b4
+  stack_len = 8
+  name = grok
+process id = 7
+  state = 0
+  priority = 4
+  stack_ptr = 00000000
+  stack_len = 0
+  name = 
+*** New ready queue: ***
+FRONT OF QUEUE
+PID = 6, name = grok, priority = 6, state = 2
+*** Calling the scheduler... ***
+*** Regs/memory before calling resched()/context switch: ***
+General purpose:
+Register A: 1cee1cee
+Register B: 00000100
+Register C: 00000000
+Register D: 00000000
+Register E: 00001cee
+Register F: 00000000
+Register G: 00000000
+Register H: 00000000
+Program counter:
+0000005c
+Memory address:
+00000000
+Memory data:
+00000000
+Flags:
+00000000
+Main memory:
+0700dead
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700c0de
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700baaa
+02000400
+0800fffe
+aaaaaaaa
+aaaaaaaa
+07001cee
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700face
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700beef
+03000500
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700babe
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+00000000
+*** Regs/memory after calling resched()/context switch: ***
+General purpose:
+Register A: 00000000
+Register B: 00000000
+Register C: 00000000
+Register D: 00000000
+Register E: 00000000
+Register F: 00000000
+Register G: 00000000
+Register H: 00000000
+Program counter:
+00000098
+Memory address:
+00000000
+Memory data:
+00000000
+Flags:
+00000000
+Main memory:
+0700dead
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700c0de
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700baaa
+02000400
+0800fffe
+aaaaaaaa
+aaaaaaaa
+07001cee
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700face
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700beef
+03000500
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700babe
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+00000000
+*** On iteration 4 ***
+*** This time slice = 2 cycles***
+*** Executing process 6 ***
+Executing instruction # 7
+instr = 0700babe
+prog_counter = 00000098
+Executing instruction # 2
+instr = 02000400
+prog_counter = 0000009c
+*** Stopping execution of process 6 ***
+*** Assigned new priorities/states for all processes ***
+*** New process table: ***
+process id = 0
+  state = 5
+  priority = 8
+  stack_ptr = 00000008
+  stack_len = 8
+  name = NULL
+process id = 1
+  state = 4
+  priority = 5
+  stack_ptr = 0000002c
+  stack_len = 8
+  name = foo
+process id = 2
+  state = 3
+  priority = 7
+  stack_ptr = 00000040
+  stack_len = 8
+  name = bar
+process id = 3
+  state = 5
+  priority = 5
+  stack_ptr = 00000064
+  stack_len = 8
+  name = baz
+process id = 4
+  state = 3
+  priority = 3
+  stack_ptr = 0000007c
+  stack_len = 8
+  name = quux
+process id = 5
+  state = 3
+  priority = 6
+  stack_ptr = 00000090
+  stack_len = 8
+  name = fubar
+process id = 6
+  state = 1
+  priority = 4
+  stack_ptr = 000000b4
+  stack_len = 8
+  name = grok
+process id = 7
+  state = 0
+  priority = 5
+  stack_ptr = 00000000
+  stack_len = 0
+  name = 
+*** New ready queue: ***
+FRONT OF QUEUE
+*** Calling the scheduler... ***
+*** Regs/memory before calling resched()/context switch: ***
+General purpose:
+Register A: 0000babe
+Register B: 00000000
+Register C: 00000000
+Register D: 00000000
+Register E: 0000babe
+Register F: 00000000
+Register G: 00000000
+Register H: 00000000
+Program counter:
+000000a0
+Memory address:
+00000000
+Memory data:
+00000000
+Flags:
+00000000
+Main memory:
+0700dead
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700c0de
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700baaa
+02000400
+0800fffe
+aaaaaaaa
+aaaaaaaa
+07001cee
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700face
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700beef
+03000500
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700babe
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+00000000
+*** Regs/memory after calling resched()/context switch: ***
+General purpose:
+Register A: 0000babe
+Register B: 00000000
+Register C: 00000000
+Register D: 00000000
+Register E: 0000babe
+Register F: 00000000
+Register G: 00000000
+Register H: 00000000
+Program counter:
+000000a0
+Memory address:
+00000000
+Memory data:
+00000000
+Flags:
+00000000
+Main memory:
+0700dead
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700c0de
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700baaa
+02000400
+0800fffe
+aaaaaaaa
+aaaaaaaa
+07001cee
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700face
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700beef
+03000500
+0800ffff
+aaaaaaaa
+aaaaaaaa
+0700babe
+02000400
+07010100
+05010000
+05010000
+03000400
+0800ffff
+aaaaaaaa
+aaaaaaaa
+00000000
