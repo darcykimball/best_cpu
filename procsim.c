@@ -1,9 +1,12 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "cpu.h"
 #include "pqueue.h"
 #include "proctab.h"
+
+int GetRand(int min, int max);
 
 #define STK_GARBAGE 0xAA /* Garbage value so stack sections are easy to see;
                             not using the stacks in this simulation */
@@ -46,10 +49,51 @@ void init_ready_queue(priority_queue* ready_queue, proc_entry* proc_table, size_
 
 /* Assign random priorities and states to all processes except the null process */
 void assign_priorities_states(proc_entry* proc_table, size_t n) {
-  int i;
+  int i; /* Processes in process table*/
+  int j; /* Number of values*/
+  int r; /* Random value*/
 
+  /* For every process in process table, determine 2 random values
+	 (1 for priority and 1 for process state*/
   for (i = 1; i < n; i++) {
-  
+	  for (j = 0; j < 2; j++)
+	  {
+		  r = GetRand(0, 6);
+		  if (j == 0)
+		  {
+			  /* Determine Priority based on random value*/
+				 proc_table[i].priority = r;
+		  }
+
+		  /* Determine process state based on random value*/
+		  if (j == 1)
+		  {
+			  switch (r)
+			  {
+			  case 0:
+				  proc_table[i].state = PR_EMPTY;
+				  break;
+			  case 1:
+				  proc_table[i].state = PR_CURR;
+				  break;
+			  case 2:
+				  proc_table[i].state = PR_READY;
+				  break;
+			  case 3:
+				  proc_table[i].state = PR_WAIT;
+				  break;
+			  case 4:
+				  proc_table[i].state = PR_RECV;
+				  break;
+			  case 5:
+				  proc_table[i].state = PR_SLEEP;
+				  break;
+			  case 6:
+				  proc_table[i].state = PR_SUSP;
+				  break;
+			  }
+		  }
+	  }
   } 
 }
 
@@ -179,4 +223,22 @@ int main() {
   }
 
   return EXIT_SUCCESS;
+}
+
+int GetRand(int min, int max)
+{
+	static int Init = 0;
+	int rc;
+
+	/* Makes sure everytime this is run, provides different values*/
+	if (Init == 0)
+	{
+		srand(time(NULL));
+		Init = 1;
+	}
+
+	/* Gives a random value between the min and max values*/
+	rc = (rand() % (max - min + 1) + min);
+
+	return (rc);
 }
