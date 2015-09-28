@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include "cpu.h"
 
-#define DEBUG
+//#define DEBUG
+#define VERBOSE
 
 const char* reg_names[] = { "A", "B", "C", "D", "E", "F", "G", "H" };
 
@@ -73,10 +74,10 @@ void execute(registers* regs, memory* mem) {
   instr = *(uint32_t*)(mem->data + regs->prog_counter);
   instr_index = GETINSTR(instr);
 
-#ifdef DEBUG
-  fprintf(stderr, "instr = %08x\n", instr);
-  fprintf(stderr, "prog_counter = %08x\n", regs->prog_counter);
-  fprintf(stderr, "Executing instruction # %u\n", instr_index);
+#ifdef VERBOSE
+  printf("Executing instruction # %u\n", instr_index);
+  printf("instr = %08x\n", instr);
+  printf("prog_counter = %08x\n", regs->prog_counter);
 #endif
 
   /* Get register args */
