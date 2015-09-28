@@ -8,6 +8,7 @@
 #define STK_GARBAGE 0xAA /* Garbage value so stack sections are easy to see;
                             not using the stacks in this simulation */
 #define N_SIM_ITER 5 /* Number of simulation iterations */
+#define MAX_TIME 8 /* Max time-slice value */
 
 /* Copy program into memory and allocate a stack; then create a process table
  * entry with random priority and state */
@@ -50,6 +51,11 @@ void assign_priorities_states(proc_entry* proc_table, size_t n) {
   for (i = 1; i < n; i++) {
   
   } 
+}
+
+/* The scheduler */
+void resched(proc_entry* proc_table, priority_queue* ready_queue, registers* regs) {
+  /* TODO */
 }
 
 uint32_t null_program[] = {
@@ -112,6 +118,7 @@ int main() {
   priority_queue* ready_queue; /* Priority queue of processes w/state PR_READY */
   size_t offset; /* For keep track of occupied memory when loading programs */
   uint32_t current_pid; /* Process id of the current process */
+  uint32_t time_slice; /* Number of instructions to run before calling resched() */
   int i; /* Iteration index */
 
   /* 
@@ -147,7 +154,17 @@ int main() {
   ready_queue = NULL;
 
   for (i = 0; i < N_SIM_ITER; i++) {
+    /* Execute for a random number of cycles */
+    time_slice = rand() % MAX_TIME + 1;
+
+    while (time_slice > 0) {
+      /* XXX: program counter is updated in execute() */
+      execute(&regs, &mem);
+      time_slice--;
+    }
+
     /* Randomly assign priorities to the processes */
+    assign_priorities_states(proc_table, PROC_TAB_SIZE);
 
     /* Set up the ready queue */
     if (ready_queue != NULL) {
@@ -156,6 +173,9 @@ int main() {
 
     ready_queue = new_pq(PROC_TAB_SIZE, cmp_proc_entry);
     init_ready_queue(ready_queue, proc_table, sizeof(proc_table)/sizeof(proc_entry));
+
+    /* Run the scheduler */
+    resched(proc_table, ready_queue, &regs);
   }
 
   return EXIT_SUCCESS;
