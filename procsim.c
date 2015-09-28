@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "cpu.h"
 #include "pqueue.h"
 #include "proctab.h"
@@ -71,7 +72,7 @@ void assign_priorities_states(proc_entry* proc_table, size_t n) {
 			  switch (r)
 			  {
 			  case 0:
-				  proc_table[i].state = PR_EMPTY;
+				  proc_table[i].state = PR_CURR;
 				  break;
 			  case 1:
 				  proc_table[i].state = PR_CURR;
