@@ -55,10 +55,12 @@ void init_ready_queue(priority_queue* ready_queue, proc_entry* proc_table, size_
  */
 void dump_ready_queue(priority_queue* ready_queue) {
   int i;
-  proc_entry* prentry = (proc_entry*)top_pq(ready_queue);
+  proc_entry** queue_data = (proc_entry**)(ready_queue->heap);
+  proc_entry* prentry;
 
   printf("FRONT OF QUEUE\n");
   for (i = 0; i < ready_queue->n_elems; i++) {
+    prentry = queue_data[i];
     printf("PID = %u, name = %s, priority = %d, state = %u\n", 
       prentry->pid, prentry->name, prentry->priority, prentry->state);
   }
