@@ -29,9 +29,6 @@ void load_program(uint32_t* program, size_t prog_size, const char* name,
 
   /* Update offset */
   *start_offset += prog_size + STK_MAX;
-
-  /* FIXME: remove!! */
-  fprintf(stderr, "*start_offset = %u\n", *start_offset);
 }
 
 /* Set up the ready queue with processes in the given process table */
@@ -46,9 +43,18 @@ void init_ready_queue(priority_queue* ready_queue, proc_entry* proc_table, size_
   }
 }
 
+/* Assign random priorities and states to all processes except the null process */
+void assign_priorities_states(proc_entry* proc_table, size_t n) {
+  int i;
+
+  for (i = 1; i < n; i++) {
+  
+  } 
+}
+
 uint32_t null_program[] = {
-  SETC(0xFFFF, 0),
-  SET(0, 4),
+  SETC(0xDEAD, 0),
+  JMP(-1),
 };
 
 uint32_t foo_program[] = {
@@ -57,7 +63,8 @@ uint32_t foo_program[] = {
   SETC(0x0100, 1),
   MUL(1, 0, 0),
   MUL(1, 0, 0),
-  ADD(0, 4, 0)
+  ADD(0, 4, 0),
+  JMP(-1)
 };
 
 uint32_t bar_program[] = {
@@ -71,18 +78,21 @@ uint32_t baz_program[] = {
   SETC(0x0100, 1),
   MUL(1, 0, 0),
   MUL(1, 0, 0),
-  ADD(0, 4, 0)
+  ADD(0, 4, 0),
+  JMP(-1)
 };
 
 uint32_t quux_program[] = {
   SETC(0xDEAD, 0),
   MUL(1, 0, 0),
-  ADD(0, 4, 0)
+  ADD(0, 4, 0),
+  JMP(-1)
 };
 
 uint32_t fubar_program[] = {
   SETC(0xBEEF, 0),
-  ADD(0, 5, 0)
+  ADD(0, 5, 0),
+  JMP(-1)
 };
 
 uint32_t grok_program[] = {
@@ -91,7 +101,8 @@ uint32_t grok_program[] = {
   SETC(0x0100, 1),
   MUL(1, 0, 0),
   MUL(1, 0, 0),
-  ADD(0, 4, 0)
+  ADD(0, 4, 0),
+  JMP(-1)
 };
 
 int main() {

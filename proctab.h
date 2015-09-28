@@ -19,7 +19,10 @@
 #define PR_EMPTY 0
 #define PR_CURR  1 
 #define PR_READY 2
-#define PR_SUSP  3
+#define PR_WAIT  3
+#define PR_RECV  4
+#define PR_SLEEP 5
+#define PR_SUSP  6
 
 /* Info for a process */
 typedef struct proc_entry {
