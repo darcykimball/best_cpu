@@ -159,12 +159,19 @@ int main() {
   load_program(grok_program, sizeof(grok_program), "grok", &mem, &offset, proc_table, 6);
 
   /* Dump initial state */
+  printf("*** Initial state: ***\n");
   dump_registers(&regs);
   dump_memory(&mem);
   dump_proc_table(proc_table, sizeof(proc_table)/sizeof(proc_entry));
 
-  /* TODO: main loop of reassignig priorities, scheduling, etc. */
+  /* Start running the damn thing. We start 'in medias res' with the null process (pid = 0) */
+  
+  /* Initialize null process entry and program counter to the proper state */
   current_pid = 0;
+  proc_table[current_pid].state = PR_CURR;
+  regs.prog_counter = 0; /* Hard-coded 0 since we put the null process's text at the 
+                             beginning of memory */
+
   ready_queue = NULL;
 
   for (i = 0; i < N_SIM_ITER; i++) {
@@ -200,8 +207,16 @@ int main() {
 
     /* Run the scheduler */
     printf("*** Calling the scheduler... ***\n");
+    printf("*** Regs/memory before calling resched()/context switch: ***\n");
+    dump_registers(&regs);
+    dump_memory(&mem);
 
     resched(proc_table, ready_queue, &regs, &current_pid);
+
+    /* Dump memory to show the context switch */
+    printf("*** Regs/memory after calling resched()/context switch: ***\n");
+    dump_registers(&regs);
+    dump_memory(&mem);
   }
 
   /* Cleanup */
