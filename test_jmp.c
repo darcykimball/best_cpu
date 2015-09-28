@@ -6,12 +6,10 @@
 #define OS_SIZE 8 /* Just some arbitrary number for now */
 
 uint32_t test_program[] = {
-  SETC(0xC0DE, 0),
-  SET(0, 4),
-  SETC(0x0100, 1),
-  MUL(1, 0, 0),
-  MUL(1, 0, 0),
-  ADD(0, 4, 0)
+  SETC(0x0001, 0), 
+  SETC(0x0002, 1),
+  MUL(0, 1, 0),
+  JMP(-1)
 };
 
 int main() {
@@ -33,20 +31,16 @@ int main() {
   /* Initialize some register and memory values 
    * (hard-coded for the purposes of testing)
    */
-  const uint32_t sample_value_addr = OS_SIZE + sizeof(test_program);
-
-  //regs.general[0] = 0xDEADBEEF;
-  //regs.general[1] = sample_value_addr; 
-  //regs.general[3] = 0xCAFEBABE;
-
   printf("Initial state:\n");
   dump_registers(&regs);
   dump_memory(&mem);
 
   /* Execute program */
+
+  /* Initialize program counter */
   regs.prog_counter = OS_SIZE;
 
-  for (i = 0; i < sizeof(test_program)/sizeof(uint32_t); i++) {
+  for (i = 0; i < 2*sizeof(test_program)/sizeof(uint32_t) + 2; i++) {
     printf("Executing instruction %u in test_program\n", i);
 
     /* Execute instruction */

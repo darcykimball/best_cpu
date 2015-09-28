@@ -1,6 +1,6 @@
 CC = gcc
 CCFLAGS = -Wall
-EXES = test_fetch_store test_arithmetic test_pq procsim
+EXES = test_fetch_store test_arithmetic test_pq procsim test_jmp
 
 all: $(EXES)
 
@@ -24,6 +24,12 @@ test_pq: test_pq.o pqueue.o
 
 procsim: procsim.o pqueue.o cpu.o proctab.o
 	$(CC) -o procsim procsim.o pqueue.o cpu.o proctab.o
+
+test_jmp: test_jmp.o
+	$(CC) -o test_jmp test_jmp.o cpu.o
+
+test_jmp.o: test_jmp.c cpu.o
+	$(CC) $(CCFLAGS) -c test_jmp.c
 
 pqueue.o: pqueue.h pqueue.c
 	$(CC) $(CCFLAGS) -c pqueue.c

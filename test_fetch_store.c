@@ -42,11 +42,10 @@ int main() {
   dump_memory(&mem);
 
   /* Execute program */
+  regs.prog_counter = OS_SIZE;
+
   for (i = 0; i < sizeof(test_program)/sizeof(uint32_t); i++) {
     printf("Executing instruction %u in test_program\n", i);
-
-    /* Set program counter */
-    regs.prog_counter = OS_SIZE + i * sizeof(uint32_t);
 
     /* Execute instruction */
     execute(&regs, &mem);

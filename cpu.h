@@ -25,6 +25,7 @@
 #define MUL_OP  0x05000000
 #define DIV_OP  0x06000000
 #define SETC_OP 0x07000000 /* Set an immediate constant */
+#define JMP_OP  0x08000000 /* Jump by a (signed) constant */
 #define SLL_OP  0x09000000 /* TODO */
 #define SRL_OP  0x0A000000 /* TODO */
 #define AND_OP  0x0B000000 /* TODO */
@@ -39,6 +40,7 @@
 #define MUL(r1,r2,r3) (MUL_OP | ((r1) << 2*8) | (r2 << 8) | (r3))
 #define DIV(r1,r2,r3) (DIV_OP | ((r1) << 2*8) | (r2 << 8) | (r3))
 #define SETC(c,r) (SETC_OP | ((r) << 2*8) | (0x0000FFFF & (c)))
+#define JMP(c) (JMP_OP | (0x0000FFFF & (c)))
 #define SLL(r1,r2,r3) /* TODO */
 #define SRL(r1,r2,r3) /* TODO */
 #define AND(r1,r2,r3) /* TODO */
@@ -52,7 +54,7 @@
 #define GETOP1(instr) (((instr) & 0x00FF0000) >> 2*8)
 #define GETOP2(instr) (((instr) & 0x0000FF00) >> 8)
 #define GETOP3(instr) ((instr) & 0x000000FF)
-#define GETCONST(instr) ((instr) & 0x0000FFFF) /* Only for SETC */
+#define GETCONST(instr) ((instr) & 0x0000FFFF) /* Only for SETC/JMP */
 
 /* Registers */
 typedef uint32_t reg;
@@ -121,5 +123,8 @@ void orb(void* op1, void* op2, void* dest);
 
 /* Bitwise xor */
 void xorb(void* op1, void* op2, void* dest);
+
+/* Jump by a constant (basically just adding to program counter) */
+void jmp(void* num, void* pc, void* unused);
 
 #endif /* CPU_H */

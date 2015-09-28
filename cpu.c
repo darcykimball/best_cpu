@@ -15,7 +15,8 @@ instr_ptr instr_table[] = {
   sub,
   mul,
   divide,
-  setc
+  setc,
+  jmp
 };
 
 /* Dump contents of registers */
@@ -95,12 +96,22 @@ void execute(registers* regs, memory* mem) {
     instr_table[instr_index](mem, regs->general + nreg1, regs->general + nreg2);
   } else if (instr_index == GETINSTR(SETC_OP)) {
     /* This is a set constant instruction; have to pass the constant value */
-    instr_table[instr_index]((void*)GETCONST(regs->prog_counter),
+    instr_table[instr_index]((void*)GETCONST(instr),
       regs->general + nreg1, NULL);
+  } else if (instr_index == GETINSTR(JMP_OP)) {
+    /* This is a jump; have to pass constant and program counter */
+    instr_table[instr_index]((void*)GETCONST(instr),
+      &(regs->prog_counter), NULL);
+
+    /* We don't want to increment program counter after a jump */
+    return; 
   } else {
     instr_table[instr_index](regs->general + nreg1, regs->general + nreg2,
       regs->general + nreg3);
   }
+
+  /* Increment program counter */
+  regs->prog_counter += sizeof(uint32_t);
 }
 
 void fetch(void* mem, void* addr, void* dest) {
@@ -172,4 +183,8 @@ void orb(void* op1, void* op2, void* dest) {
 
 /* TODO */
 void xorb(void* op1, void* op2, void* dest) {
+}
+
+void jmp(void* num, void* pc, void* unused) {
+  *(int32_t*)pc = *(int32_t*)pc + (int16_t)num * sizeof(uint32_t);
 }
