@@ -33,6 +33,9 @@ void load_program(uint32_t* program, size_t prog_size, const char* name,
   proc_table[pid].pid = pid;
   strcpy(proc_table[pid].name, name);
   memset(&(proc_table[pid].regs), 0, sizeof(registers));
+  
+  /* Initialize program counter!! Not sure if this is the right place to do it */
+  proc_table[pid].regs.prog_counter = *start_offset;
 
   /* Update offset */
   *start_offset += prog_size + STK_MAX;
@@ -106,6 +109,7 @@ uint32_t foo_program[] = {
 uint32_t bar_program[] = {
   SETC(0xBAAA, 0),
   SET(0, 4),
+  JMP(-2)
 };
 
 uint32_t baz_program[] = {
@@ -119,7 +123,7 @@ uint32_t baz_program[] = {
 };
 
 uint32_t quux_program[] = {
-  SETC(0xDEAD, 0),
+  SETC(0xFACE, 0),
   MUL(1, 0, 0),
   ADD(0, 4, 0),
   JMP(-1)
