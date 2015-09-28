@@ -73,7 +73,7 @@ void assign_priorities_states(proc_entry* proc_table, size_t n) {
 	 (1 for priority and 1 for process state) */
   for (i = 0; i < n; i++) {
 		/* Determine process state based on random value*/
-    if (proc_table[i].state != PR_EMPTY) {
+    if (proc_table[i].state != PR_EMPTY && proc_table[i].state != PR_CURR) {
       /* XXX: can't be PR_CURR or PR_EMPTY since at the time of generating new states,
        * there is a currently executing process */
       r = GetRand(PR_READY, PR_SUSP); /* from 2 to PR_SUSP, hopefully */
