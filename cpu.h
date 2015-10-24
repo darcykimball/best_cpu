@@ -5,8 +5,11 @@
 #include <stdint.h>
 
 #define N_REGIS 8 /* Number of general-purpose registers */
+
+#ifndef MEMSIZE
 #define MEMSIZE 1536 /* Size of main memory in bytes 
                        XXX: mult. of 4 or bad shit will happen */
+#endif
 
 #define DUMPINT(f,n) fprintf((f), "%08x\n", n)
 
