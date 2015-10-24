@@ -1,6 +1,14 @@
 #ifndef PAGE_H
 #define PAGE_H
 
+#ifndef N_PAGES
+#define N_PAGES 4
+#endif
+
+#ifndef PAGE_SIZE
+#define PAGE_SIZE 8 /* bytes */
+#endif
+
 /* Simulate checking if a (virtual) address's contents is resident in memory. 
  * This yield true/false 50/50 of the time. */
 bool is_resident(uint32_t addr);
